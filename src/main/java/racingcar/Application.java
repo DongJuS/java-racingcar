@@ -25,104 +25,126 @@ class InputView {
         return Try;
     }
 }
-class ResultView {
-        private static final String FORWARD_SIGN = "-";
 
-        public void printResult(){
-            System.out.println("실행 결과\n");
+class ResultView {
+    private static final String FORWARD_SIGN = "-";
+
+    public void printResult() {
+        System.out.println("실행 결과\n");
+    }
+
+    public void showResult(List<Car> carList) {
+        for (int i = 0; i < carList.size(); i++) {
+            System.out.print(carList.get(i).getName() + " : ");
+            System.out.println(FORWARD_SIGN.repeat(carList.get(i).getPosition()));
         }
-        public void showResult(List<Car> carList){
-            for(int i =0; i< carList.size(); i++){
-                System.out.print(carList.get(i).getName()+" : ");
-                System.out.println(FORWARD_SIGN.repeat(carList.get(i).getPosition()));
-            }
-            System.out.println();
-        }
+        System.out.println();
+    }
 }
-class Car{
+
+class Car {
     private String name;
     private int position;
     static final String COMMA = ",";
     private static final int FORWARD_STANDARD = 4;
     private Car car;
 
-    Car(String name, int position){
+    Car(String name, int position) {
         this.name = name;
         this.position = 0;
     }
+
     public Car(String name) {
         this.name = name;
         this.position = 0;
     }
-    public Car(int position){
-        this.position =0;
+
+    public Car(int position) {
+        this.position = 0;
     }
-    public Car(){};
+
+    public Car() {
+    }
+
+    ;
 
     public List<String> splitName(String names) {
         return new ArrayList<>(Arrays.asList(names.split(COMMA)));
     }
 
-    boolean canForward(int random){
+    boolean canForward(int random) {
         return random >= FORWARD_STANDARD;
     }
-    void move(){
+
+    void move() {
         this.position++;
     }
-    void makeForward(Car car, int random){
-        
-        if(canForward(random)){
+
+    void makeForward(Car car, int random) {
+
+        if (canForward(random)) {
             car.move();
         }
     }
-    int getPosition(){
+
+    int getPosition() {
         return this.position;
     }
 
-    boolean isSamePosition(int max){
-        return this.position ==max;
+    boolean isSamePosition(int max) {
+        return this.position == max;
     }
-    public int getMax(int max){
+
+    public int getMax(int max) {
         return Math.max(max, this.position);
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
 
 
 }
 
-class RacingGame{
+class RacingGame {
     public void race(List<Car> carList) {
         int random = 0;
         for (Car car : carList) {
-            random = Randoms.pickNumberInRange(0,9);
-            car.makeForward(car,random);
+            random = Randoms.pickNumberInRange(0, 9);
+            car.makeForward(car, random);
         }
     }
 }
+
 class CarFactory {
-    public CarFactory(){};
-    List<Car> createCars(String names){
+    public CarFactory() {
+    }
+
+    ;
+
+    List<Car> createCars(String names) {
         List<Car> carList = new ArrayList<>();
         Car car = new Car();
-        for(String name : car.splitName(names)){
+        for (String name : car.splitName(names)) {
             carList.add(new Car(name));
         }
         return carList;
     }
 }
+
 class Winner {
     public List<String> findWinner(List<Car> carList) {
         return exploreWinnerName(carList, findMax(carList));
     }
-    public int findMax(List<Car> carList){
+
+    public int findMax(List<Car> carList) {
         int max = 0;
         for (Car car : carList) {
             max = new Car(car.getPosition()).getMax(max);
         }
         return max;
     }
+
     private List<String> exploreWinnerName(List<Car> carList, int max) {
         List<String> winnerNames = new ArrayList<>();
 
@@ -131,7 +153,8 @@ class Winner {
         }
         return winnerNames;
     }
-    private List<String> putWinnerNames(List<String> winnerNames, int max, Car car){
+
+    private List<String> putWinnerNames(List<String> winnerNames, int max, Car car) {
         if (new Car(car.getPosition()).isSamePosition(max)) {
             winnerNames.add(car.getName());
         }
@@ -158,8 +181,8 @@ public class Application {
             racing.race(carList);
             resultView.showResult(carList);
         }
-        for(String win : winner.findWinner(carList)){
-            System.out.print("winner is : "+winner.findWinner(carList));
+        for (String win : winner.findWinner(carList)) {
+            System.out.print("winner is : " + winner.findWinner(carList));
         }
 
     }
